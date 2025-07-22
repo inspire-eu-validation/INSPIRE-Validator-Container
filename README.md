@@ -12,7 +12,7 @@
 3. [Official deployment instructions](#official-deployment-instructions)  
 4. [Contributing](#contributing)  
 5. [License](#license)  
-6. [Maintainers](#maintainers)  
+6. [Maintainers](#maintainers)
 
 
 This repository provides the necessary resources to **build and run a Docker container** for the [INSPIRE Reference Validator](https://inspire.ec.europa.eu/validator/home/index.html). The validator is used to verify the conformity of spatial data sets and services with the INSPIRE Directive and related Technical Guidelines.
@@ -34,8 +34,8 @@ This containerization allows public authorities, data providers and integrators 
     ├── docker-entrypoint.sh # Script executed at container start-up
     ├── httpd.conf           # Base Apache HTTPD configuration
     ├── proxy.conf           # Generic proxy settings
-    ├── proxy_1.conf         # Additional proxy example (variant 1)
-    ├── proxy_2.conf         # Additional proxy example (variant 2)
+    ├── proxy_1.conf         # Apache proxy for INSPIRE Registry
+    ├── proxy_2.conf         # Apache proxy for validator UI and captcha
     ├── squid.conf           # Squid proxy configuration
     ├── geant.pem            # GEANT CA certificate
     ├── services.lgrb-bw.de  # Certificate for services.lgrb-bw.de
