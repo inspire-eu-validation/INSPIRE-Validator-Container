@@ -27,8 +27,8 @@ This containerization allows public authorities, data providers and integrators 
 ├── Dockerfile               # Instructions to build the container image
 ├── VERSION                  # Image tag (e.g. 2025.1) used during build
 ├── LICENSE                  # EUPL-1.2 licence text
-├── README.md                # Project documentation
-├── ui.zip.md                # Placeholder for UI binary – replace with ui.zip
+├── README                   # Project documentation
+├── ui.zip                   # Placeholder for UI binary – replace with ui.zip
 ├── validator.war.md         # Placeholder for core binary – replace with validator.war
 └── res/                     # Runtime scripts and configuration files
     ├── docker-entrypoint.sh # Script executed at container start-up
