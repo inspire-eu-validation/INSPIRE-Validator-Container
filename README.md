@@ -23,24 +23,26 @@ This containerization allows public authorities, data providers and integrators 
 
 ## Repository structure
 
-├── Dockerfile
-├── VERSION
-├── LICENSE
-├── README.md
-├── ui.zip.md # Placeholder – see “Binary files”
-├── validator.war.md # Placeholder – see “Binary files”
-└── res/
-├── docker-entrypoint.sh
-├── httpd.conf
-├── proxy.conf
-├── proxy_1.conf
-├── proxy_2.conf
-├── squid.conf
-├── geant.pem
-├── services.lgrb-bw.de
-├── opendata.skgeodesy.sk
-├── _.fega.gob.es
-└── _.hzinfra.hr
+```text
+├── Dockerfile               # Instructions to build the container image
+├── VERSION                  # Image tag (e.g. 2025.1) used during build
+├── LICENSE                  # EUPL-1.2 licence text
+├── README.md                # Project documentation (you’re reading it)
+├── ui.zip.md                # Placeholder for UI binary – replace with ui.zip
+├── validator.war.md         # Placeholder for core binary – replace with validator.war
+└── res/                     # Runtime scripts and configuration files
+    ├── docker-entrypoint.sh # Script executed at container start-up
+    ├── httpd.conf           # Base Apache HTTPD configuration
+    ├── proxy.conf           # Generic proxy settings
+    ├── proxy_1.conf         # Additional proxy example (variant 1)
+    ├── proxy_2.conf         # Additional proxy example (variant 2)
+    ├── squid.conf           # Squid proxy configuration
+    ├── geant.pem            # GEANT CA certificate
+    ├── services.lgrb-bw.de  # Certificate for services.lgrb-bw.de
+    ├── opendata.skgeodesy.sk# Certificate for opendata.skgeodesy.sk
+    ├── _.fega.gob.es        # Wild-card certificate for *.fega.gob.es
+    └── _.hzinfra.hr         # Wild-card certificate for *.hzinfra.hr
+```
 
 
 - `Dockerfile`: Defines the image used to run the validator.
