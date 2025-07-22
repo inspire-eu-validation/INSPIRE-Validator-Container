@@ -27,7 +27,7 @@ This containerization allows public authorities, data providers and integrators 
 ├── Dockerfile               # Instructions to build the container image
 ├── VERSION                  # Image tag (e.g. 2025.1) used during build
 ├── LICENSE                  # EUPL-1.2 licence text
-├── README.md                # Project documentation (you’re reading it)
+├── README.md                # Project documentation
 ├── ui.zip.md                # Placeholder for UI binary – replace with ui.zip
 ├── validator.war.md         # Placeholder for core binary – replace with validator.war
 └── res/                     # Runtime scripts and configuration files
@@ -71,71 +71,126 @@ Place both files in the root of the repository (alongside the `Dockerfile`) befo
 Run the following command in the root directory:
 
 ```bash
-docker build -t inspire-validator:2025.1 .
+docker build . -t [IMAGE_NAME]:[VERSION]
+```
+
+For example:
+```bash
+docker build . -t inspire-validator:2025.1
 ```
 
 This will build a container image using the version tag defined in the VERSION file.
-
 
 ---
 
 ### Run the container
 
 ```bash
-docker run --name inspire-validator \
-  -d -p 8090:8090 \
-  -v ~/etf:/etf \
-  inspire-validator:2025.1
+docker run --name inspire-validator -d -p 8090:8090 -v ~/etf:/etf [IMAGE_NAME]:[VERSION]
 ```
 
-The validator UI will be available at:
+For example:
+```bash
+docker run --name inspire-validator -d -p 8090:8090 -v ~/etf:/etf inspire-validator:2025.1
+```
+
+This launches a container with the image, exposing the UI in port 8090 through the same port in the host machine, and uses a volume in the local file system, on the directory ~/etf, this will create an ~/etf folder inside the user home folder.
+
+Once the INSPIRE Reference Validator has fully loaded, we can access to it through the URL:
     http://localhost:8090/validator/home/index.html
 
 A volume is mounted to persist user data under ~/etf.
 
-###Proxy support
+### Proxy support
 
 If your environment requires using a proxy, the container can be run with the following environment variables:
 
+For the run command, you need to add the environment variables to it:
+
 ```bash
---env http_proxy=http://your.proxy:port \
---env https_proxy=https://your.proxy:port \
---env no_proxy=127.0.0.1,localhost
+--env http_proxy=[HTTP_PROXY_URL:PORT] \
+--env https_proxy=[HTTPS_PROXY_URL:PORT] \
+--env no_proxy=127.0.0.1,localhost,*.<mydomain>
 ```
 
 During the build process, you may also provide proxy settings as build arguments:
 
 ```bash
---build-arg http_proxy=http://your.proxy:port \
---build-arg https_proxy=https://your.proxy:port
+--build-arg http_proxy=[HTTP_PROXY_URL:PORT] \
+--build-arg https_proxy=[HTTPS_PROXY_URL:PORT] \
+--build-arg no_proxy=127.0.0.1,localhost,*.<my-domain>
 ```
 
-See the Docker proxy configuration guide for details.
+These can also be set up in the Dockerfile, using the keyword ENV.
+
+For more information please check out [Docker proxy configuration guide](https://docs.docker.com/network/proxy).
 
 ### Binary files
 
 The validator.war and ui.zip files are part of the release packages made available by the INSPIRE Reference Validator. This repository does not store them for maintenance reasons.
 
-You must download them manually from the [official validator release page](https://github.com/jenriquesoriano/helpdesk-validator/releases/) and place them in the root directory of the repository before building the image.
+You must download them manually from the [official validator releases page](https://github.com/INSPIRE-MIF/helpdesk-validator/releases/) and place them in the root directory of the repository before building the image.
 
 ## Official deployment instructions
 
-Comprehensive deployment, configuration and troubleshooting steps are provided in the upstream documentation:
+### Modifying the Docker image
 
-INSPIRE Validator – Docker Deployment Instructions
-https://github.com/INSPIRE-MIF/helpdesk-validator/blob/master/training%20material/2020-09-16_Docker_deployment_instructions.md
+In the inspire-validator ZIP file, you can find all the resources needed to generate the Docker image from this release. If you would like to tweak anything from it, you can modify any of its contents (Dockerfile, entrypoint file, configuration files... ), then execute (inside the ETF docker folder) the command:
 
-Topics covered include:
+```bash
+docker build . -t [IMAGE_NAME]:[VERSION]
+```
 
-    Building and running the image
+You can run this again using the run command:
 
-    Running behind a proxy
+```bash
+docker run --name inspire-validator -d -p 8090:8090 -v ~/etf:/etf [IMAGE_NAME]:[VERSION]
+```
 
-    Custom domain configuration
+### Deployment on production host
 
-    Using the INSPIRE Registry cache
+The Docker image is set up to run at localhost to be deployed on any machine. However, users may need to access their validator on a dedicated host, usually with a domain name. For proper functioning of the validator, the UI and correct rendering of Test Reports, the validator needs to be configured to run on a domain.
 
-    Providing TEAM Engine credentials
+If you want to run the webapp in another host, you can change the configuration file, inside the .war file inside the inspire-validator zip file accompanying this release, at `WEB-INF/classes/etf-config.properties`, and modify the `etf.webapp.base.url` property.  
+It is also necessary to configure the Validator UI properties in order to properly point to the ETF. Thus, it is necessary to modify the configuration values in the /validator/js/config.js file inside the ui.zip (to point to the corresponding host domain).  
+Then you can proceed to the build process described in the previous point.
+
+Since 22/12/2022 OGC moved to production version 5.5.2 (2022-08-26) of the TEAM Engine, which introduced credentials for the calls to the services.  
+Thus, any deployment which makes use of the OGC TEAM Engine needs to introduce credentials (to be requested here) in order to use them.  
+We have incorporated three parameters in the _/WEB-INF/classes/etf-config.properties_ file of _validator.war_ that need to be filled accordingly to authorize the use of the services:
+
+```properties
+#TEAM Engine credentials of your organization in order to properly use TEAM Engine remote calls
+etf.testdrivers.teamengine.url = http://cite.opengeospatial.org/teamengine
+etf.testdrivers.teamengine.username = 
+etf.testdrivers.teamengine.password =
+```
+
+### Setting up a cache of INSPIRE Registry resources
+
+In your own deployment you may want to increase the performance of fetching the different resources that the INSPIRE Reference Validator requires from the INSPIRE Registry for validations.
+
+The file `inspire-registry-resources.zip` is included in the official release package and contains the resources that the INSPIRE Reference Validator requests to the INSPIRE Registry to execute the validations defined in the Executable Test Suites (ETSs).  
+Using this content, you may configure your own deployment to access these resources without the need to make a call to the INSPIRE Registry to obtain them, increasing the performance of your own instance while decreasing the dependency on external resources in your installation.
+
+> ⚠️ **Note**: The `inspire-registry-resources.zip` file is **not included** in this container repository. You must download it separately from the [official release](https://github.com/INSPIRE-MIF/helpdesk-validator/releases/) where it is attached as an asset.
+
+#### Example of setting up INSPIRE Registry resources as cache
+
+In order to show how to use the Registry resources as cache, we have prepared a simple example.  
+The purpose of this example is to provide a foundation that can be adapted to an organization's proxy policies.
+
+* Download the Registry resources from the official release assets.
+* Unzip the resources.
+* Open a terminal and access the resources folder
+* Publish the resources as an http server using, for example, Python:  
+`python -m http.server 8000`
+* Once the resources are published, we can use any proxy reverse (nginx, apache, ...). We show you an example using fiddle:  
+`function OnBeforeRequest(oSession: Session) { if (oSession.host == "inspire.ec.europa.eu") { oSession.host = "0.0.0.0"; oSession.port = 8000; oSession.url = oSession.url.replace("https://inspire.ec.europa.eu", "http://0.0.0.0:8000"); } }`
+
+This will ensure that all the Validator's requests to the Registry are redirected to the server, using these local Registry resources instead.
+
+For further configuration, please download the file inspire-validator-2025.1.zip and follow the instructions in the README.md file inside the .zip file.
 
 ## Contributing
 
