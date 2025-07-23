@@ -25,27 +25,27 @@ The repository only contains the containerization infrastructure (Dockerfile, co
 
 ```text
 ├── Dockerfile               # Instructions to build the container image
-├── VERSION                  # Image tag (e.g. 2025.1) used during build
+├── VERSION                  # Tag of used ETF version
 ├── LICENSE                  # EUPL-1.2 licence text
 ├── README                   # Project documentation
-├── ui.zip                   # Placeholder for UI binary – replace with ui.zip
+├── ui.zip                   # Placeholder for UI binary – replace with ui.zip (https://github.com/inspire-eu-validation/INSPIRE-Validator-UI)
 ├── validator.war            # Placeholder for core binary – replace with validator.war
 └── res/                     # Runtime scripts and configuration files
     ├── docker-entrypoint.sh # Script executed at container start-up
     ├── httpd.conf           # Base Apache HTTPD configuration
-    ├── proxy.conf           # Generic proxy settings
-    ├── proxy_1.conf         # Apache proxy for INSPIRE Registry
-    ├── proxy_2.conf         # Apache proxy for validator UI and captcha
+    ├── proxy.conf           # Base proxy settings
+    ├── proxy_1.conf         # Base proxy for INSPIRE
+    ├── proxy_2.conf         # Apache proxy setting for validator UI and captcha
     ├── squid.conf           # Squid proxy configuration
     ├── geant.pem            # GEANT CA certificate
     ├── services.lgrb-bw.de  # Certificate for services.lgrb-bw.de
     ├── opendata.skgeodesy.sk# Certificate for opendata.skgeodesy.sk
-    ├── _.fega.gob.es        # Wild-card certificate for *.fega.gob.es
-    └── _.hzinfra.hr         # Wild-card certificate for *.hzinfra.hr
+    ├── _.fega.gob.es        # Certificate for *.fega.gob.es
+    └── _.hzinfra.hr         # Certificate for *.hzinfra.hr
 ```
 
 - `Dockerfile`: Defines the image used to run the validator.
-- `VERSION`: Specifies the current release tag to build and label the image.
+- `VERSION`: Specifies the current ETF tag used to build the image.
 - `res/`: Contains the entrypoint script and auxiliary configuration files used during runtime.
 
 ## Getting started
