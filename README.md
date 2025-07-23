@@ -52,7 +52,7 @@ The repository only contains the containerization infrastructure (Dockerfile, co
 
 ### Prerequisites
 
-You need to download the following two files from the [latest official release](https://inspire.ec.europa.eu/validator/download) of the INSPIRE Reference Validator:
+You need to download the following two files from the [latest official release](https://github.com/INSPIRE-MIF/helpdesk-validator/releases/) of the INSPIRE Reference Validator:
 
 - `validator.war`
 - `ui.zip`
