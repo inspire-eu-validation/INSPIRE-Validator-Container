@@ -202,7 +202,7 @@ Please follow existing patterns and naming conventions. Squash-merge is used for
 ## License
 
 This project is licensed under the European Union Public Licence v1.2 (EUPL-1.2).
-See the [LICENSE](https://github.com/inspire-eu-validation/INSPIRE-Validator-Container/blob/main/LICENSE) file for details.
+  See the [LICENSE](https://github.com/inspire-eu-validation/INSPIRE-Validator-Container/blob/main/LICENSE) file for details.
 
 ## Maintainers
 
