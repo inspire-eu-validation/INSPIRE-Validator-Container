@@ -19,7 +19,7 @@ This repository provides the necessary resources to **build and run a Docker con
 
 This containerization allows public authorities, data providers and integrators to deploy the INSPIRE Reference Validator in their own environments, either for internal testing or as part of production workflows.
 
-> The repository only contains the containerization infrastructure (Dockerfile, configuration files, entrypoint script, etc.). The Validator binaries (`validator.war` and `ui.zip`) must be downloaded manually — see below.
+The repository only contains the containerization infrastructure (Dockerfile, configuration files, entrypoint script, etc.). The Validator binaries (`validator.war` and `ui.zip`) must be downloaded manually — see below.
 
 ## Repository structure
 
@@ -29,7 +29,7 @@ This containerization allows public authorities, data providers and integrators 
 ├── LICENSE                  # EUPL-1.2 licence text
 ├── README                   # Project documentation
 ├── ui.zip                   # Placeholder for UI binary – replace with ui.zip
-├── validator.war.md         # Placeholder for core binary – replace with validator.war
+├── validator.war            # Placeholder for core binary – replace with validator.war
 └── res/                     # Runtime scripts and configuration files
     ├── docker-entrypoint.sh # Script executed at container start-up
     ├── httpd.conf           # Base Apache HTTPD configuration
@@ -44,12 +44,9 @@ This containerization allows public authorities, data providers and integrators 
     └── _.hzinfra.hr         # Wild-card certificate for *.hzinfra.hr
 ```
 
-
 - `Dockerfile`: Defines the image used to run the validator.
 - `VERSION`: Specifies the current release tag to build and label the image.
 - `res/`: Contains the entrypoint script and auxiliary configuration files used during runtime.
-
----
 
 ## Getting started
 
@@ -62,9 +59,7 @@ You need to download the following two files from the [latest official release](
 
 Place both files in the root of the repository (alongside the `Dockerfile`) before building the image.
 
-> The files `validator.war.md` and `ui.zip.md` are **not** functional — they exist to keep Git history clean and indicate where the real files must go.
-
----
+The files `validator.war.md` and `ui.zip.md` are **not** functional — they exist to keep Git history clean and indicate where the real files must go.
 
 ### Build the container
 
@@ -80,8 +75,6 @@ docker build . -t inspire-validator:2025.1
 ```
 
 This will build a container image using the version tag defined in the VERSION file.
-
----
 
 ### Run the container
 
@@ -173,7 +166,7 @@ In your own deployment you may want to increase the performance of fetching the 
 The file `inspire-registry-resources.zip` is included in the official release package and contains the resources that the INSPIRE Reference Validator requests to the INSPIRE Registry to execute the validations defined in the Executable Test Suites (ETSs).  
 Using this content, you may configure your own deployment to access these resources without the need to make a call to the INSPIRE Registry to obtain them, increasing the performance of your own instance while decreasing the dependency on external resources in your installation.
 
-> ⚠️ **Note**: The `inspire-registry-resources.zip` file is **not included** in this container repository. You must download it separately from the [official release](https://github.com/INSPIRE-MIF/helpdesk-validator/releases/) where it is attached as an asset.
+ **Note**: The `inspire-registry-resources.zip` file is **not included** in this container repository. You must download it separately from the [official release](https://github.com/INSPIRE-MIF/helpdesk-validator/releases/) where it is attached as an asset.
 
 #### Example of setting up INSPIRE Registry resources as cache
 
