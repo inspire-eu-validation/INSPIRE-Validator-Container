@@ -19,7 +19,7 @@ This repository provides the necessary resources to **build and run a Docker con
 
 This containerization allows public authorities, data providers and integrators to deploy the INSPIRE Reference Validator in their own environments, either for internal testing or as part of production workflows.
 
-> ⚠️ The repository only contains the containerization infrastructure (Dockerfile, configuration files, entrypoint script, etc.). The Validator binaries (`validator.war` and `ui.zip`) must be downloaded manually — see below.
+> The repository only contains the containerization infrastructure (Dockerfile, configuration files, entrypoint script, etc.). The Validator binaries (`validator.war` and `ui.zip`) must be downloaded manually — see below.
 
 ## Repository structure
 
