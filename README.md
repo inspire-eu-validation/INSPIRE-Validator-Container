@@ -15,9 +15,9 @@
 6. [Maintainers](#maintainers)
 
 
-This repository provides the necessary resources to **build and run a Docker container** for the [INSPIRE Reference Validator](https://inspire.ec.europa.eu/validator/home/index.html). The validator is used to verify the conformity of spatial data sets and services with the INSPIRE Directive and related Technical Guidelines.
+This repository provides the necessary resources to **build and run a Docker container** for the [INSPIRE Reference Validator](https://inspire.ec.europa.eu/validator/home/index.html). The Validator is used to check the conformity of metadata, spatial data sets and services against the INSPIRE Technical Guidelines.
 
-This containerization allows public authorities, data providers and integrators to deploy the INSPIRE Reference Validator in their own environments, either for internal testing or as part of production workflows.
+This containerization allows public authorities, data providers and implementers to deploy the INSPIRE Reference Validator in their own environments, either for internal testing or as part of production workflows.
 
 The repository only contains the containerization infrastructure (Dockerfile, configuration files, entrypoint script, etc.). The Validator binaries (`validator.war` and `ui.zip`) must be downloaded manually — see below.
 
@@ -44,7 +44,7 @@ The repository only contains the containerization infrastructure (Dockerfile, co
     └── _.hzinfra.hr         # Certificate for *.hzinfra.hr
 ```
 
-- `Dockerfile`: Defines the image used to run the validator.
+- `Dockerfile`: Defines the image used to run the Validator.
 - `VERSION`: Specifies the current ETF tag used to build the image.
 - `res/`: Contains the entrypoint script and auxiliary configuration files used during runtime.
 
@@ -89,7 +89,7 @@ docker run --name inspire-validator -d -p 8090:8090 -v ~/etf:/etf inspire-valida
 
 This launches a container with the image, exposing the UI in port 8090 through the same port in the host machine, and uses a volume in the local file system, on the directory ~/etf, this will create an ~/etf folder inside the user home folder.
 
-Once the INSPIRE Reference Validator has fully loaded, we can access to it through the URL:
+Once the INSPIRE Reference Validator has fully loaded, access to it through the URL:
     http://localhost:8090/validator/home/index.html
 
 A volume is mounted to persist user data under ~/etf.
@@ -120,7 +120,7 @@ For more information please check out [Docker proxy configuration guide](https:/
 
 ### Binary files
 
-The validator.war and ui.zip files are part of the release packages made available by the INSPIRE Reference Validator. This repository does not store them for maintenance reasons.
+The `validator.war` and `ui.zip` files are part of the release packages made available by the INSPIRE Reference Validator. This repository does not store them for maintenance reasons.
 
 You must download them manually from the [official validator releases page](https://github.com/INSPIRE-MIF/helpdesk-validator/releases/) and place them in the root directory of the repository before building the image.
 
@@ -128,7 +128,7 @@ You must download them manually from the [official validator releases page](http
 
 ### Modifying the Docker image
 
-In the inspire-validator ZIP file, you can find all the resources needed to generate the Docker image from this release. If you would like to tweak anything from it, you can modify any of its contents (Dockerfile, entrypoint file, configuration files... ), then execute (inside the ETF docker folder) the command:
+In the inspire-validator ZIP file, you can find all the resources needed to generate the Docker image from this release. If you would like to tweak anything from it, you can modify any of its contents (Dockerfile, entrypoint file, configuration files, etc.), then execute (inside the ETF docker folder) the command:
 
 ```bash
 docker build . -t [IMAGE_NAME]:[VERSION]
@@ -142,15 +142,15 @@ docker run --name inspire-validator -d -p 8090:8090 -v ~/etf:/etf [IMAGE_NAME]:[
 
 ### Deployment on production host
 
-The Docker image is set up to run at localhost to be deployed on any machine. However, users may need to access their validator on a dedicated host, usually with a domain name. For proper functioning of the validator, the UI and correct rendering of Test Reports, the validator needs to be configured to run on a domain.
+The Docker image is set up to run at localhost to be deployed on any machine. However, users may need to access their Validator on a dedicated host, usually with a domain name. For the proper functioning of the Validator, the UI and the correct rendering of Test Reports, the Validator needs to be configured to run on a domain.
 
 If you want to run the webapp in another host, you can change the configuration file, inside the .war file inside the inspire-validator zip file accompanying this release, at `WEB-INF/classes/etf-config.properties`, and modify the `etf.webapp.base.url` property.  
-It is also necessary to configure the Validator UI properties in order to properly point to the ETF. Thus, it is necessary to modify the configuration values in the /validator/js/config.js file inside the ui.zip (to point to the corresponding host domain).  
+It is also necessary to configure the Validator UI properties in order to properly point to the ETF. Thus, it is necessary to modify the configuration values in the `/validator/js/config.js` file inside the `ui.zip` (to point to the corresponding host domain).  
 Then you can proceed to the build process described in the previous point.
 
 Since 22/12/2022 OGC moved to production version 5.5.2 (2022-08-26) of the TEAM Engine, which introduced credentials for the calls to the services.  
 Thus, any deployment which makes use of the OGC TEAM Engine needs to introduce credentials (to be requested here) in order to use them.  
-We have incorporated three parameters in the _/WEB-INF/classes/etf-config.properties_ file of _validator.war_ that need to be filled accordingly to authorize the use of the services:
+We have incorporated three parameters in the `/WEB-INF/classes/etf-config.properties` file of `validator.war` that need to be filled accordingly to authorize the use of the services:
 
 ```properties
 #TEAM Engine credentials of your organization in order to properly use TEAM Engine remote calls
@@ -183,11 +183,11 @@ The purpose of this example is to provide a foundation that can be adapted to an
 
 This will ensure that all the Validator's requests to the Registry are redirected to the server, using these local Registry resources instead.
 
-For further configuration, please download the file inspire-validator-2025.1.zip and follow the instructions in the README.md file inside the .zip file.
+For further configuration, please download the file `inspire-validator-2025.1.zip` and follow the instructions in the `README.md` file inside the .zip file.
 
 ## Contributing
 
-We welcome contributions from Member States, implementers and the wider community.
+We welcome contributions from Member States, implementers and the wider INSPIRE community.
 
 To contribute:
 
@@ -195,7 +195,6 @@ To contribute:
 2. Create a new branch from `main`.
 3. Make your changes.
 4. Submit a pull request with a clear description of the change.
-
 
 Please follow existing patterns and naming conventions. Squash-merge is used for PRs.
 
