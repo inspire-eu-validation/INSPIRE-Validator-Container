@@ -87,7 +87,8 @@ For example:
 docker run --name inspire-validator -d -p 8090:8090 -v ~/etf:/etf inspire-validator:2025.1
 ```
 
-This launches a container with the image, exposing the UI in port 8090 through the same port in the host machine, and uses a volume in the local file system, on the directory ~/etf, this will create an ~/etf folder inside the user home folder.
+This launches a container from the specified image, exposing the UI on port 8090, mapped to the same port on the host.
+Additionally, it mounts a local volume from ~/etf, which will result in an etf directory being created in the user's home folder if it does not already exist.
 
 Once the INSPIRE Reference Validator has fully loaded, access to it through the URL:
     http://localhost:8090/validator/home/index.html
@@ -149,7 +150,7 @@ It is also necessary to configure the Validator UI properties in order to proper
 Then you can proceed to the build process described in the previous point.
 
 Since 22/12/2022 OGC moved to production version 5.5.2 (2022-08-26) of the TEAM Engine, which introduced credentials for the calls to the services.  
-Thus, any deployment which makes use of the OGC TEAM Engine needs to introduce credentials (to be requested here) in order to use them.  
+Thus, any deployment which makes use of the OGC TEAM Engine needs to introduce credentials (to be requested the [OGC Validator register page](https://cite.opengeospatial.org/teamengine/register.jsp)) in order to use them.  
 We have incorporated three parameters in the `/WEB-INF/classes/etf-config.properties` file of `validator.war` that need to be filled accordingly to authorize the use of the services:
 
 ```properties
