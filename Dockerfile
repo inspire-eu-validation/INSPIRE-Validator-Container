@@ -169,6 +169,11 @@ RUN touch /run/openrc/softlevel
 #RUN apk del curl libcurl wget y unzip y nano
 RUN apk add curl libcurl wget unzip nano
 
+# Add a dummy index page to guide users to the /validator path
+# For 8080 port
+COPY res/index.html /var/lib/jetty/webapps/ROOT/
+# For 8090 port
+COPY res/index.html /etf/
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["java","-jar","/usr/local/jetty/start.jar"]
