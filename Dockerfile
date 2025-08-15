@@ -83,6 +83,9 @@ ENV SERVICE_DOMAIN_OVERRIDE ""
 
 RUN mv /docker-entrypoint.sh /docker-entrypoint-jetty.sh
 COPY res/docker-entrypoint.sh /
+# Ensure the sh has permission to execute
+# Preventing: Error: crun: open executable: Permission denied: OCI permission denied
+RUN chmod +x /docker-entrypoint.sh
 
 # Inject the config properties file so we have a file to modify the domain at container build.
 # Otherwise the app will write a default properties file on startup.
