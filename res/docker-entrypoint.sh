@@ -153,6 +153,16 @@ if [ ! -n "$ETF_RELATIVE_URL" ]; then
     ETF_RELATIVE_URL=etf-webapp
 fi
 
+# Change configured domain from http://localhost:8090 to ENV-variable value
+sed -i "s|http://localhost:8090|$SERVICE_DOMAIN_OVERRIDE|g" "$ETF_DIR/validator/js/config.js"
+
+# Modify the base URL which points to the deployed web application.
+# The URL is used to reference this ETF instance in the Test Reports.
+# Example: http://yourserver/etf-webapp
+# Default value is:
+#   etf.webapp.base.url = http://localhost:8090/validator
+sed -i "s|http://localhost:8090|$SERVICE_DOMAIN_OVERRIDE|g" "$ETF_DIR/config/etf-config.properties"
+
 # Download Webapp
 if [ ! -f "$appServerDeplPath/$ETF_RELATIVE_URL".war ]; then
     echo "Downloading ETF. This may take a while..."
