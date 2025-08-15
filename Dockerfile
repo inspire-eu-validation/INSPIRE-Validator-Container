@@ -85,6 +85,11 @@ RUN apk add --no-cache tini openrc busybox-openrc
 
 COPY res/squid.conf /etc/squid/squid.conf
 
+# Allows apache2 and squid to start without having hostname
+# Required for running on local WSL/container app in Azure
+# https://github.com/INSPIRE-MIF/helpdesk-validator/issues/1107
+# Also see: https://github.com/INSPIRE-MIF/helpdesk-validator/issues/1081#issuecomment-2205423986
+RUN echo 'rc_need="!dev !net"' >> /etc/rc.conf
 
 COPY ui.zip ui.zip
 
