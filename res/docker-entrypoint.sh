@@ -163,6 +163,10 @@ sed -i "s|http://localhost:8090|$SERVICE_DOMAIN_OVERRIDE|g" "$ETF_DIR/validator/
 #   etf.webapp.base.url = http://localhost:8090/validator
 sed -i "s|http://localhost:8090|$SERVICE_DOMAIN_OVERRIDE|g" "$ETF_DIR/config/etf-config.properties"
 
+# Allow toggling the 'etf.testobject.allow.privatenet.access' setting on etf-config
+sed -i "s|PRIVATENET_ACCESS_FROM_ENV|$PRIVATENET_ACCESS|g" "$ETF_DIR/config/etf-config.properties"
+
+
 # Download Webapp
 if [ ! -f "$appServerDeplPath/$ETF_RELATIVE_URL".war ]; then
     echo "Downloading ETF. This may take a while..."

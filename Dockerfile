@@ -81,6 +81,10 @@ ENV HTTPS_PROXY_PASSWORD none
 #  - /etf/config/etf-config.properties
 ENV SERVICE_DOMAIN_OVERRIDE ""
 
+# toggle 'etf.testobject.allow.privatenet.access' setting on etf-config.properties
+# Default to false
+ENV PRIVATENET_ACCESS false
+
 RUN mv /docker-entrypoint.sh /docker-entrypoint-jetty.sh
 COPY res/docker-entrypoint.sh /
 # Ensure the sh has permission to execute
