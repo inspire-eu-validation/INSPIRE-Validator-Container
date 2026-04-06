@@ -73,8 +73,27 @@ ENV HTTPS_PROXY_USERNAME none
 # Optional password for authenticating against HTTP Secure proxy server or "none"
 ENV HTTPS_PROXY_PASSWORD none
 
+# Config domain where the service runs
+# - empty string means current domain
+# - code defaults to http://localhost:8090
+# Affects (sed cmd in res/docker-entrypoint.sh):
+#  - /etf/validator/js/config.js
+#  - /etf/config/etf-config.properties
+ENV SERVICE_DOMAIN_OVERRIDE ""
+
+# toggle 'etf.testobject.allow.privatenet.access' setting on etf-config.properties
+# Default to false
+ENV PRIVATENET_ACCESS false
+
 RUN mv /docker-entrypoint.sh /docker-entrypoint-jetty.sh
 COPY res/docker-entrypoint.sh /
+# Ensure the sh has permission to execute
+# Preventing: Error: crun: open executable: Permission denied: OCI permission denied
+RUN chmod +x /docker-entrypoint.sh
+
+# Inject the config properties file so we have a file to modify the domain at container build.
+# Otherwise the app will write a default properties file on startup.
+COPY res/etf-config.properties $ETF_DIR/config/
 
 RUN apk add openrc --no-cache
 
