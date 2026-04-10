@@ -1,4 +1,4 @@
-FROM jetty:10.0.18-jre11-alpine-eclipse-temurin
+FROM jetty:10.0.25-jre11-alpine-eclipse-temurin
 MAINTAINER Guadaltel <guadaltel.com>
 LABEL maintainer="Guadaltel <inspire.jrc@guadaltel.com>"
 
