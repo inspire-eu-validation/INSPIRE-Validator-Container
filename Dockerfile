@@ -188,6 +188,11 @@ RUN touch /run/openrc/softlevel
 #RUN apk del curl libcurl wget y unzip y nano
 RUN apk add curl libcurl wget unzip nano
 
+# Add a dummy index page to guide users to the /validator path
+# For 8080 port
+COPY res/index.html /var/lib/jetty/webapps/ROOT/
+# For 8090 port
+COPY res/index.html /etf/
 # Config Jetty to not announce version
 RUN echo "jetty.httpConfig.sendServerVersion=false" >> /var/lib/jetty/start.ini
 # Config apache to not announce version
