@@ -1,4 +1,4 @@
-FROM jetty:10.0.18-jre11-alpine-eclipse-temurin
+FROM jetty:10.0.25-jre11-alpine-eclipse-temurin
 MAINTAINER Guadaltel <guadaltel.com>
 LABEL maintainer="Guadaltel <inspire.jrc@guadaltel.com>"
 
@@ -73,8 +73,27 @@ ENV HTTPS_PROXY_USERNAME none
 # Optional password for authenticating against HTTP Secure proxy server or "none"
 ENV HTTPS_PROXY_PASSWORD none
 
+# Config domain where the service runs
+# - empty string means current domain
+# - code defaults to http://localhost:8090
+# Affects (sed cmd in res/docker-entrypoint.sh):
+#  - /etf/validator/js/config.js
+#  - /etf/config/etf-config.properties
+ENV SERVICE_DOMAIN_OVERRIDE ""
+
+# toggle 'etf.testobject.allow.privatenet.access' setting on etf-config.properties
+# Default to false
+ENV PRIVATENET_ACCESS false
+
 RUN mv /docker-entrypoint.sh /docker-entrypoint-jetty.sh
 COPY res/docker-entrypoint.sh /
+# Ensure the sh has permission to execute
+# Preventing: Error: crun: open executable: Permission denied: OCI permission denied
+RUN chmod +x /docker-entrypoint.sh
+
+# Inject the config properties file so we have a file to modify the domain at container build.
+# Otherwise the app will write a default properties file on startup.
+COPY res/etf-config.properties $ETF_DIR/config/
 
 RUN apk add openrc --no-cache
 
@@ -174,6 +193,11 @@ RUN apk add curl libcurl wget unzip nano
 COPY res/index.html /var/lib/jetty/webapps/ROOT/
 # For 8090 port
 COPY res/index.html /etf/
+# Config Jetty to not announce version
+RUN echo "jetty.httpConfig.sendServerVersion=false" >> /var/lib/jetty/start.ini
+# Config apache to not announce version
+RUN sed -i "s|ServerTokens OS|ServerTokens Prod|g" /etc/apache2/httpd.conf
+RUN sed -i "s|ServerSignature On|ServerSignature Off|g" /etc/apache2/httpd.conf
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["java","-jar","/usr/local/jetty/start.jar"]
